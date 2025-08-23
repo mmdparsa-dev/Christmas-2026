@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Countdown to New Year 2026</title>
+<link rel="stylesheet" href="font.css">
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'UEFAEuroHeavy', sans-serif;
+  background: linear-gradient(135deg, #8B0000 0%, #006400 100%);
+  color: #fff;
+  overflow: hidden;
+  user-select: none;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 300px;
+  border-radius: 40px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+}
+.title {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.countdown {
+  display: flex;
+  gap: clamp(2rem,5vw,6rem);
+  font-weight: 800;
+  font-size: clamp(2rem,5vw,3rem);
+  justify-content: center;
+  align-items: flex-end;
+}
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+.time-label {
+  font-size: clamp(0.9rem,2vw,1.1rem);
+  font-weight: 600;
+  opacity: 0.9;
+}
+.time-value {
+  font-size:40;
+  line-height: 1;
+  transition: transform 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+  letter-spacing: 0.04em;
+}
+#link {
+  position: fixed;
+  bottom: -175px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  transition: 0.3s;
+  z-index: 9999;
+}
+
+#link:hover {
+  background: rgba(0,0,0,0.6);
+  color: #00aaff;
+}
+@media(max-width:420px){
+  .countdown { gap: 1.5rem; font-size: 2rem;}
+  .time-value { font-size: 2.5rem;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="title">Countdown to New Year 2026</div>
+  <div class="countdown">
+    <div class="time-unit">
+      <div id="months" class="time-value">00</div>
+      <div class="time-label">Months</div>
+    </div>
+    <div class="time-unit">
+      <div id="days" class="time-value">00</div>
+      <div class="time-label">Days</div>
+    </div>
+    <div class="time-unit">
+      <div id="hours" class="time-value">00</div>
+      <div class="time-label">Hours</div>
+    </div>
+    <div class="time-unit">
+      <div id="minutes" class="time-value">00</div>
+      <div class="time-label">Minutes</div>
+    </div>
+    <div class="time-unit">
+      <div id="seconds" class="time-value">00</div>
+      <div class="time-label">Seconds</div>
+    </div>
+  </div>
+ <a href="https://github.com/mmdparsa-dev/Christmas-2026" target="_blank" id="link">View Project on GitHub</a>
+</div>
+
+<script>
+// Elements
+const elems = {
+  months: document.getElementById('months'),
+  days: document.getElementById('days'),
+  hours: document.getElementById('hours'),
+  minutes: document.getElementById('minutes'),
+  seconds: document.getElementById('seconds')
+};
+const prevValues = {};
+function animateChange(elem, newVal){
+  if(!elem || prevValues[elem.id]===newVal) return;
+  prevValues[elem.id]=newVal;
+  elem.style.transform='translateY(-100%)';
+  elem.style.opacity='0';
+  elem.style.filter='blur(6px)';
+  setTimeout(()=>{
+    elem.textContent=newVal;
+    elem.style.transition='none';
+    elem.style.transform='translateY(100%)';
+    elem.style.opacity='0';
+    elem.style.filter='blur(2px)';
+    void elem.offsetWidth;
+    elem.style.transition='transform 1s ease, opacity 1s ease, filter 1s ease';
+    elem.style.transform='translateY(0)';
+    elem.style.opacity='1';
+    elem.style.filter='blur(0)';
+  },500);
+}
+
+// Countdown update
+const target = new Date(Date.UTC(2026,0,1,0,0,0)); // Jan 1, 2026, 00:00 UTC
+function update(){
+  const now=new Date();
+  let diff=target-now;
+  if(diff<0) diff=0;
+
+  const totalSec=Math.floor(diff/1000);
+  const sec=totalSec%60;
+  const totalMin=Math.floor(totalSec/60);
+  const min=totalMin%60;
+  const totalH=Math.floor(totalMin/60);
+  const hrs=totalH%24;
+  const totalDays=Math.floor(totalH/24);
+
+  const months=Math.floor(totalDays/30);
+  const days=totalDays - months*30;
+
+  animateChange(elems.months,String(months).padStart(2,'0'));
+  animateChange(elems.days,String(days).padStart(2,'0'));
+  animateChange(elems.hours,String(hrs).padStart(2,'0'));
+  animateChange(elems.minutes,String(min).padStart(2,'0'));
+  animateChange(elems.seconds,String(sec).padStart(2,'0'));
+}
+setInterval(update,250);
+update();
+</script>
+</body>
+</html>
