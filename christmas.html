@@ -12,7 +12,7 @@ body {
   justify-content: center;
   align-items: center;
   font-family: 'UEFAEuroHeavy', sans-serif;
-  background: linear-gradient(135deg, #3A0CA3 0%, #B5179E 50%, #FFBA08 100%);
+  background: linear-gradient(135deg, #56CCF2 16%, #2F80ED 50%);
   background-size: 200% 200%;
   animation: nyGradient 10s ease infinite;
   color: #fff;
@@ -24,22 +24,30 @@ body {
   0%, 100% { background-position: 0% 50%; }
   50%      { background-position: 100% 50%; }
 }
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 60px 150px;
   border-radius: 40px;
-  background: linear-gradient(180deg, rgba(212,175,55,0.12), rgba(255,255,255,0.06));
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  backdrop-filter: blur(20px);
+   background: rgba(255, 255, 255, 0.076);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 12px 60px rgba(0,0,0,0.5);
 }
+
 .title {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   margin-bottom: 20px;
   font-weight: bold;
   text-align: center;
 }
+
 .countdown {
   display: flex;
   gap: clamp(2rem,5vw,6rem);
@@ -48,23 +56,27 @@ body {
   justify-content: center;
   align-items: flex-end;
 }
+
 .time-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
 }
+
 .time-label {
   font-size: clamp(0.9rem,2vw,1.1rem);
   font-weight: 600;
   opacity: 0.9;
 }
+
 .time-value {
   font-size:40px;
   line-height: 1;
   transition: transform 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
   letter-spacing: 0.04em;
 }
+
 #link {
   position: fixed;
   bottom: -175px;
@@ -76,19 +88,45 @@ body {
   color: #fff;
   text-decoration: none;
   border-radius: 12px;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(8px);
+   background: rgba(255, 255, 255, 0.076);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.3);
   transition: 0.3s;
   z-index: 9999;
 }
 
-#link:hover {
-  background: rgba(0,0,0,0.6);
+
+/* پیام فول‌اسکرین Motion Blur */
+#fullscreen-msg {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-300%);
+  background: rgba(255, 255, 255, 0.076);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 25px 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
   color: #fff;
+  text-align: center;
+  opacity: 0;
+  cursor: pointer;
+  filter: blur(15px);
+  transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease, filter 0.5s ease;
+  z-index: 99999;
 }
+
 @media(max-width:420px){
   .countdown { gap: 1.5rem; font-size: 2rem;}
   .time-value { font-size: 2.5rem;}
+  .container { padding: 40px 20px; }
+  #fullscreen-msg { font-size: 1.2rem; padding: 15px 25px; }
 }
 </style>
 </head>
@@ -120,8 +158,14 @@ body {
  <a href="https://github.com/mmdparsa-dev/Christmas-2026" target="_blank" id="link">View Project on GitHub</a>
 </div>
 
+<!-- پیام فول‌اسکرین -->
+<div id="fullscreen-msg">Go Fullscreen</div>
+
 <script>
-// Elements
+// تبدیل اعداد به دو رقم
+function pad2(num){ return String(num).padStart(2,'0'); }
+
+// عناصر شمارش معکوس
 const elems = {
   months: document.getElementById('months'),
   days: document.getElementById('days'),
@@ -130,7 +174,9 @@ const elems = {
   seconds: document.getElementById('seconds')
 };
 const prevValues = {};
-function animateChange(elem, newVal){
+
+// انیمیشن تغییر اعداد
+function animateChange(elem,newVal){
   if(!elem || prevValues[elem.id]===newVal) return;
   prevValues[elem.id]=newVal;
   elem.style.transform='translateY(-100%)';
@@ -150,11 +196,25 @@ function animateChange(elem, newVal){
   },500);
 }
 
-// Countdown update
-const target = new Date(Date.UTC(2026,0,1,0,0,0)); // Jan 1, 2026, 00:00 UTC
+// تاریخ هدف
+const target = new Date(Date.UTC(2026,0,1,0,0,0));
+
+// محاسبه ماه و روز دقیق
+function calcMonthsDays(now,target){
+  let months = target.getUTCMonth() - now.getUTCMonth() + (target.getUTCFullYear()-now.getUTCFullYear())*12;
+  let days = target.getUTCDate() - now.getUTCDate();
+  if(days<0){
+    months-=1;
+    const prevMonth = new Date(target.getUTCFullYear(), target.getUTCMonth(),0);
+    days += prevMonth.getUTCDate();
+  }
+  return {months,days};
+}
+
+// بروزرسانی شمارش معکوس
 function update(){
-  const now=new Date();
-  let diff=target-now;
+  const now = new Date();
+  let diff = target-now;
   if(diff<0) diff=0;
 
   const totalSec=Math.floor(diff/1000);
@@ -163,19 +223,57 @@ function update(){
   const min=totalMin%60;
   const totalH=Math.floor(totalMin/60);
   const hrs=totalH%24;
-  const totalDays=Math.floor(totalH/24);
 
-  const months=Math.floor(totalDays/30);
-  const days=totalDays - months*30;
+  const {months,days}=calcMonthsDays(now,target);
 
-  animateChange(elems.months,String(months).padStart(2,'0'));
-  animateChange(elems.days,String(days).padStart(2,'0'));
-  animateChange(elems.hours,String(hrs).padStart(2,'0'));
-  animateChange(elems.minutes,String(min).padStart(2,'0'));
-  animateChange(elems.seconds,String(sec).padStart(2,'0'));
+  animateChange(elems.months,pad2(months));
+  animateChange(elems.days,pad2(days));
+  animateChange(elems.hours,pad2(hrs));
+  animateChange(elems.minutes,pad2(min));
+  animateChange(elems.seconds,pad2(sec));
 }
 setInterval(update,250);
 update();
+
+// پیغام فول‌اسکرین Motion Blur + ویبره
+const msg = document.getElementById('fullscreen-msg');
+let autoClose;
+
+function showFullscreenMessage(){
+  msg.style.transform="translateX(-50%) translateY(250%)";
+  msg.style.opacity="1";
+  msg.style.filter="blur(0)";
+  if(navigator.vibrate) navigator.vibrate(50);
+  autoClose=setTimeout(hideMessage,4000);
+}
+
+function hideMessage(){
+  msg.style.opacity="0";
+  msg.style.filter="blur(15px)";
+  msg.style.transform="translateX(-50%) translateY(-300%)";
+  clearTimeout(autoClose);
+}
+
+// ورود اولیه پیام
+setTimeout(showFullscreenMessage,100);
+
+// دوباره ظاهر شدن پیام هنگام خروج از فول‌اسکرین
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement){
+    const body=document.body;
+    if(!document.body.contains(msg)) body.appendChild(msg);
+    setTimeout(showFullscreenMessage,100);
+  }
+});
+
+// کلیک → فول‌اسکرین + حذف سریع پیام
+msg.addEventListener('click',()=>{
+  const elem=document.documentElement;
+  if(elem.requestFullscreen) elem.requestFullscreen();
+  else if(elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+  else if(elem.msRequestFullscreen) elem.msRequestFullscreen();
+  hideMessage();
+});
 </script>
 </body>
 </html>
