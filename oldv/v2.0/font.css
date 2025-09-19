@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'UEFAEuroHeavy';
+  src: 
+    url('fonts/UEFAEuro-HeavyExtended.woff2') format('woff2'),
+    url('fonts/UEFAEuro-HeavyExtended.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'UEFAEuroHeavy', sans-serif;
+}
