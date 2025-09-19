@@ -1,279 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Countdown to New Year 2026</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Countdown 2026 — Ultimate</title>
 <link rel="stylesheet" href="font.css">
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'UEFAEuroHeavy', sans-serif;
-  background: linear-gradient(135deg, #56CCF2 16%, #2F80ED 50%);
-  background-size: 200% 200%;
-  animation: nyGradient 10s ease infinite;
-  color: #fff;
-  overflow: hidden;
-  user-select: none;
+:root{
+  --bg1:#0f172a;
+  --bg2:#05214a;
+  --glass:rgba(255,255,255,0.06);
+  --glass-2:rgba(255,255,255,0.04);
+  --accent1:#56CCF2;
+  --accent2:#2F80ED;
+  --neon:#7CFC00;
+  --muted:rgba(255,255,255,0.6);
+  --card-radius:28px;
+  --shadow-1:0 8px 40px rgba(2,6,23,0.6);
+  --glass-border:rgba(255,255,255,0.08);
+  --glass-strong:rgba(255,255,255,0.12);
+  --glass-weak:rgba(255,255,255,0.03);
+  --mono: 'UEFAEuroHeavy', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
-
-@keyframes nyGradient {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:var(--mono);
+  background: linear-gradient(135deg,#02102a 0%, #05234b 40%, #0f2a60 100%);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  perspective:1200px;
+  isolation:isolate;
 }
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 60px 150px;
-  border-radius: 40px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-  backdrop-filter: blur(20px);
-   background: rgba(255, 255, 255, 0.076);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.3);
-  box-shadow: 0 12px 60px rgba(0,0,0,0.5);
+.container{
+  position:relative;
+  z-index:5;
+  width:min(1100px,94vw);
+  border-radius:var(--card-radius);
+  padding:48px;
+  display:flex;
+  gap:28px;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  box-shadow:var(--shadow-1);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(10px) saturate(120%);
+  -webkit-backdrop-filter:blur(10px);
+  transform:translateZ(40px);
+  overflow:visible;
 }
-
-.title {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  margin-bottom: 20px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.countdown {
-  display: flex;
-  gap: clamp(2rem,5vw,6rem);
-  font-weight: 800;
-  font-size: clamp(2rem,5vw,3rem);
-  justify-content: center;
-  align-items: flex-end;
-}
-
-.time-unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.time-label {
-  font-size: clamp(0.9rem,2vw,1.1rem);
-  font-weight: 600;
-  opacity: 0.9;
-}
-
-.time-value {
-  font-size:40px;
-  line-height: 1;
-  transition: transform 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
-  letter-spacing: 0.04em;
-}
-
-#link {
-  position: fixed;
-  bottom: -175px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px 10px;
-  font-size: 18px;
-  font-weight: 500;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 12px;
-   background: rgba(255, 255, 255, 0.076);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.3);
-  transition: 0.3s;
-  z-index: 9999;
-}
-
-
-/* پیام فول‌اسکرین Motion Blur */
-#fullscreen-msg {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%) translateY(-300%);
-  background: rgba(255, 255, 255, 0.076);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 20px;
-  padding: 25px 40px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #fff;
-  text-align: center;
-  opacity: 0;
-  cursor: pointer;
-  filter: blur(15px);
-  transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease, filter 0.5s ease;
-  z-index: 99999;
-}
-
-@media(max-width:420px){
-  .countdown { gap: 1.5rem; font-size: 2rem;}
-  .time-value { font-size: 2.5rem;}
-  .container { padding: 40px 20px; }
-  #fullscreen-msg { font-size: 1.2rem; padding: 15px 25px; }
+.left-panel{display:flex;flex-direction:column;gap:18px;flex:1;min-width:350px}
+.title{font-size:clamp(1.1rem,2.2vw,1.8rem);letter-spacing:0.04em;color:#fff;opacity:0.98;text-align:left}
+.subtitle{font-size:clamp(.76rem,1.4vw,1rem);color:var(--muted);margin-top:-4px}
+#bigday {font-size: 3rem;}
+.center-panel{display:flex;flex-direction:column;align-items:center;gap:14px;flex:1}
+.countdown{display:flex;gap:28px;align-items:flex-end;justify-content:center}
+.time-unit{display:flex;flex-direction:column;align-items:center;gap:8px}
+.time-value{font-size:clamp(2rem,4vw,3.2rem);font-weight:900;letter-spacing:0.03em;padding:10px 14px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);min-width:84px;text-align:center;position:relative;overflow:visible;transition:transform .9s cubic-bezier(.2,.9,.3,1),opacity .9s,filter .9s}
+.time-label{font-size:0.9rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em}
+.right-panel{display:flex;flex-direction:column;gap:14px;align-items:flex-end;justify-content:center;flex-basis:260px}
+.cta{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#00203f;font-weight:800;text-decoration:none;box-shadow:0 10px 30px rgba(47,128,237,0.18);transform:translateY(0);transition:transform .25s cubic-bezier(.2,.9,.3,1);position: relative;top: 75px;}
+.cta:hover{transform:translateY(-6px)}
+.link-ghost{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);text-decoration:none;font-weight:700}
+.badge{padding:8px 10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));font-weight:800}
+.small{font-size:.86rem;color:var(--muted)}
+.shadow-floor{position:absolute;left:50%;bottom:-120px;transform:translateX(-50%);width:120%;height:380px;border-radius:50%;filter:blur(60px);background:radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.0) 60%);opacity:0.85;pointer-events:none}
+.huge{font-size:5rem;font-weight:900;letter-spacing:-0.02em}
+.progress-bar{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));overflow:hidden}
+.progress-bar .fill{height:100%;width:0%;transition:width 1s linear;background:linear-gradient(90deg,var(--accent1),var(--accent2))}
+.meta{font-size:.8rem;color:var(--muted)}
+.hero-graphic{position:relative;width:220px;height:220px;border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:grid;place-items:center;border:1px solid rgba(255,255,255,0.03)}
+.hologram{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);pointer-events:none}
+@media(max-width:768px){
+  .container{flex-direction:column;padding:24px;gap:20px;}
+  .countdown{flex-wrap:wrap;gap:14px;}
+  .hero-graphic{width:160px;height:160px;}
+  .huge{font-size:3.5rem;}
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="title">Countdown to New Year 2026</div>
-  <div class="countdown">
-    <div class="time-unit">
-      <div id="months" class="time-value">00</div>
-      <div class="time-label">Months</div>
+<div class="container tilt" id="root">
+  <div class="left-panel">
+    <div class="ribbon">New Year 2026</div>
+    <div class="title big-title">Countdown to New Year 2026</div>
+    <div class="holo-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="hero-graphic">
+            <div class="huge" id="bigday" aria-label="Hours remaining until New Year">00</div>
+            <div class="hologram"></div>
+          </div>
+          <div>
+            <div class="meta">Time until midnight UTC</div>
+            <div class="count-note">Includes months and days precision</div>
+            <div style="height:10px"></div>
+            <div class="progress-bar"><div class="fill" id="progFill"></div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+          <a class="cta" href="https://github.com/mmdparsa-dev/Christmas-2026" target="_blank" aria-label="View Countdown 2026 on GitHub">View on GitHub</a>
+        </div>
+      </div>
     </div>
-    <div class="time-unit">
-      <div id="days" class="time-value">00</div>
-      <div class="time-label">Days</div>
-    </div>
-    <div class="time-unit">
-      <div id="hours" class="time-value">00</div>
-      <div class="time-label">Hours</div>
-    </div>
-    <div class="time-unit">
-      <div id="minutes" class="time-value">00</div>
-      <div class="time-label">Minutes</div>
-    </div>
-    <div class="time-unit">
-      <div id="seconds" class="time-value">00</div>
-      <div class="time-label">Seconds</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="icon-btn">⏳</div>
+      <div class="small meta">UTC Target: 2026-01-01 00:00:00</div>
     </div>
   </div>
- <a href="https://github.com/mmdparsa-dev/Christmas-2026" target="_blank" id="link">View Project on GitHub</a>
+  <div class="center-panel">
+    <div class="title subtle"></div>
+    <div class="countdown" id="countdown">
+      <div class="time-unit">
+        <time id="months" class="time-value" datetime="P0M" aria-label="Months remaining">00</time>
+        <div class="time-label">Months</div>
+      </div>
+      <div class="time-unit">
+        <time id="days" class="time-value" datetime="P0D" aria-label="Days remaining">00</time>
+        <div class="time-label">Days</div>
+      </div>
+      <div class="time-unit">
+        <time id="hours" class="time-value" datetime="PT0H" aria-label="Hours remaining">00</time>
+        <div class="time-label">Hours</div>
+      </div>
+      <div class="time-unit">
+        <time id="minutes" class="time-value" datetime="PT0M" aria-label="Minutes remaining">00</time>
+        <div class="time-label">Minutes</div>
+      </div>
+      <div class="time-unit">
+        <time id="seconds" class="time-value" datetime="PT0S" aria-label="Seconds remaining">00</time>
+        <div class="time-label">Seconds</div>
+      </div>
+    </div>
+  </div>
+  <div class="right-panel"></div>
+  <div class="shadow-floor"></div>
 </div>
-
-<!-- پیام فول‌اسکرین -->
-<div id="fullscreen-msg">Go Fullscreen</div>
-
 <script>
-// تبدیل اعداد به دو رقم
-function pad2(num){ return String(num).padStart(2,'0'); }
-
-// عناصر شمارش معکوس
-const elems = {
-  months: document.getElementById('months'),
-  days: document.getElementById('days'),
-  hours: document.getElementById('hours'),
-  minutes: document.getElementById('minutes'),
-  seconds: document.getElementById('seconds')
+const countdownEl = {
+  months:document.getElementById("months"),
+  days:document.getElementById("days"),
+  hours:document.getElementById("hours"),
+  minutes:document.getElementById("minutes"),
+  seconds:document.getElementById("seconds")
 };
-const prevValues = {};
+const bigDayEl = document.getElementById("bigday");
+const progFill = document.getElementById("progFill");
+const targetDate = new Date("2026-01-01T00:00:00Z");
 
-// انیمیشن تغییر اعداد
-function animateChange(elem,newVal){
-  if(!elem || prevValues[elem.id]===newVal) return;
-  prevValues[elem.id]=newVal;
-  elem.style.transform='translateY(-100%)';
-  elem.style.opacity='0';
-  elem.style.filter='blur(6px)';
+function animate(el,val){
+  if(el._v===val)return;
+  el._v=val;
+  el.style.transform='translateY(-30%)';
+  el.style.opacity='0';
+  el.style.filter='blur(6px)';
   setTimeout(()=>{
-    elem.textContent=newVal;
-    elem.style.transition='none';
-    elem.style.transform='translateY(100%)';
-    elem.style.opacity='0';
-    elem.style.filter='blur(2px)';
-    void elem.offsetWidth;
-    elem.style.transition='transform 1s ease, opacity 1s ease, filter 1s ease';
-    elem.style.transform='translateY(0)';
-    elem.style.opacity='1';
-    elem.style.filter='blur(0)';
-  },500);
+    el.textContent=val;
+    el.style.transition='none';
+    el.style.transform='translateY(30%)';
+    el.style.opacity='0';
+    el.style.filter='blur(2px)';
+    void el.offsetWidth;
+    el.style.transition='transform .9s cubic-bezier(.2,.9,.3,1),opacity .9s,filter .9s';
+    el.style.transform='translateY(0)';
+    el.style.opacity='1';
+    el.style.filter='blur(0)';
+  },220);
 }
 
-// تاریخ هدف
-const target = new Date(Date.UTC(2026,0,1,0,0,0));
-
-// محاسبه ماه و روز دقیق
 function calcMonthsDays(now,target){
-  let months = target.getUTCMonth() - now.getUTCMonth() + (target.getUTCFullYear()-now.getUTCFullYear())*12;
-  let days = target.getUTCDate() - now.getUTCDate();
-  if(days<0){
-    months-=1;
-    const prevMonth = new Date(target.getUTCFullYear(), target.getUTCMonth(),0);
-    days += prevMonth.getUTCDate();
-  }
-  return {months,days};
+  let m=target.getUTCMonth()-now.getUTCMonth()+(target.getUTCFullYear()-now.getUTCFullYear())*12;
+  let d=target.getUTCDate()-now.getUTCDate();
+  if(d<0){m--;d+=new Date(target.getUTCFullYear(),target.getUTCMonth(),0).getUTCDate()}
+  return {months:m,days:d};
 }
 
-// بروزرسانی شمارش معکوس
 function update(){
-  const now = new Date();
-  let diff = target-now;
+  const now=new Date();
+  let diff=targetDate-now;
   if(diff<0) diff=0;
 
-  const totalSec=Math.floor(diff/1000);
-  const sec=totalSec%60;
-  const totalMin=Math.floor(totalSec/60);
-  const min=totalMin%60;
-  const totalH=Math.floor(totalMin/60);
-  const hrs=totalH%24;
+  const sTotal=Math.floor(diff/1e3);
+  const s=sTotal%60;
+  const mTotal=Math.floor(sTotal/60);
+  const m=mTotal%60;
+  const hTotal=Math.floor(mTotal/60);
+  const h=hTotal%24;
+  const md=calcMonthsDays(now,targetDate);
 
-  const {months,days}=calcMonthsDays(now,target);
+  animate(countdownEl.months,String(md.months).padStart(2,'0'));
+  animate(countdownEl.days,String(md.days).padStart(2,'0'));
+  animate(countdownEl.hours,String(h).padStart(2,'0'));
+  animate(countdownEl.minutes,String(m).padStart(2,'0'));
+  animate(countdownEl.seconds,String(s).padStart(2,'0'));
 
-  animateChange(elems.months,pad2(months));
-  animateChange(elems.days,pad2(days));
-  animateChange(elems.hours,pad2(hrs));
-  animateChange(elems.minutes,pad2(min));
-  animateChange(elems.seconds,pad2(sec));
+  const hoursRemaining = Math.floor(diff/36e5);
+  bigDayEl.textContent = hoursRemaining;
+
+  const yearStart = new Date(Date.UTC(targetDate.getUTCFullYear(),0,0));
+  const yearEnd = new Date(Date.UTC(targetDate.getUTCFullYear(),11,31,23,59,59));
+  const totalMs = yearEnd - yearStart;
+  const elapsedMs = now - yearStart;
+  const p = Math.min(100, Math.round((elapsedMs/totalMs)*100));
+  progFill.style.width = p+'%';
+
+  setTimeout(update,1000);
 }
-setInterval(update,250);
 update();
-
-// پیغام فول‌اسکرین Motion Blur + ویبره
-const msg = document.getElementById('fullscreen-msg');
-let autoClose;
-
-function showFullscreenMessage(){
-  msg.style.transform="translateX(-50%) translateY(250%)";
-  msg.style.opacity="1";
-  msg.style.filter="blur(0)";
-  if(navigator.vibrate) navigator.vibrate(50);
-  autoClose=setTimeout(hideMessage,4000);
-}
-
-function hideMessage(){
-  msg.style.opacity="0";
-  msg.style.filter="blur(15px)";
-  msg.style.transform="translateX(-50%) translateY(-300%)";
-  clearTimeout(autoClose);
-}
-
-// ورود اولیه پیام
-setTimeout(showFullscreenMessage,100);
-
-// دوباره ظاهر شدن پیام هنگام خروج از فول‌اسکرین
-document.addEventListener('fullscreenchange',()=>{
-  if(!document.fullscreenElement){
-    const body=document.body;
-    if(!document.body.contains(msg)) body.appendChild(msg);
-    setTimeout(showFullscreenMessage,100);
-  }
-});
-
-// کلیک → فول‌اسکرین + حذف سریع پیام
-msg.addEventListener('click',()=>{
-  const elem=document.documentElement;
-  if(elem.requestFullscreen) elem.requestFullscreen();
-  else if(elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-  else if(elem.msRequestFullscreen) elem.msRequestFullscreen();
-  hideMessage();
-});
 </script>
 </body>
 </html>
